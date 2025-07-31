@@ -1,0 +1,34 @@
+.board-container {
+  display: flex;
+    justify-content: space-between;
+    min-height: calc(100vh - 200px);
+}
+.issue-list {
+  margin-top: 12px;
+  padding: 0;
+}
+
+.issue-row {
+  border-bottom: 1px solid #ececec;
+  padding: 8px 12px;
+  background: #fff;
+  font-size: 1em;
+  list-style: none;
+}
+
+.issue-row:last-child {
+  border-bottom: none;
+}
+.column {
+    text-align: center;
+    border: 1px solid #000;
+    border-radius: 15px;
+    overflow-x: hidden;
+}
+.column h2 {
+    background: #ccc;
+    border-bottom: 1px solid;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 1rem;
+}
