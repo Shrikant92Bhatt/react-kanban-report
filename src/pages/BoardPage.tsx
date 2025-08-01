@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
-import { useState } from 'react';
 import IssueColumn from '../components/IssueColumn';
 import IssueCard from '../components/IssueCard';
+import { FilterSort } from '../components/FilterSort';
 import { ISSUE_STATUSES } from '../constants/currentUser';
 import { useIssueStore } from '../store/issueStore';
 import { IssueStatus, Issue } from '../types';
@@ -10,10 +10,15 @@ import { IssueStatus, Issue } from '../types';
 export const BoardPage = () => {
     const { issues, fetchIssues, loading, updateIssueStatus } = useIssueStore();
     const [activeIssue, setActiveIssue] = useState<Issue | null>(null);
+    const [filteredIssues, setFilteredIssues] = useState<Issue[]>(issues);
 
     useEffect(() => {
         fetchIssues();
     }, [fetchIssues]);
+
+    useEffect(() => {
+        setFilteredIssues(issues);
+    }, [issues]);
 
     const handleDragStart = (event: DragStartEvent) => {
         const { active } = event;
@@ -65,10 +70,21 @@ export const BoardPage = () => {
     
     return (
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-            <div className="board-container" style={{ padding: '1rem' }}>
-                {ISSUE_STATUSES.map((status: IssueStatus)=> (
-                    <IssueColumn issues={issues} status={status} key={status} />
-                ))}
+            <div style={{ padding: '1rem' }}>
+                <FilterSort 
+                    issues={issues} 
+                    onFilteredIssues={setFilteredIssues} 
+                />
+                
+                <div className="board-container">
+                    {ISSUE_STATUSES.map((status: IssueStatus)=> (
+                        <IssueColumn 
+                            issues={filteredIssues} 
+                            status={status} 
+                            key={status} 
+                        />
+                    ))}
+                </div>
             </div>
             
             <DragOverlay>

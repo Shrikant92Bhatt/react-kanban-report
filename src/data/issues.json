@@ -4,29 +4,79 @@
     "title": "Fix login bug",
     "status": "Backlog",
     "priority": "high",
-    "severity": 3,
-    "createdAt": "2025-07-09T10:00:00Z",
+    "severity": 8,
+    "createdAt": "2025-01-15T10:00:00Z",
     "assignee": "alice",
-    "tags": ["auth", "bug"]
+    "tags": ["auth", "bug", "critical"]
   },
   {
     "id": "2",
     "title": "Improve dashboard loading",
     "status": "In Progress",
     "priority": "medium",
-    "severity": 2,
-    "createdAt": "2025-07-08T12:00:00Z",
+    "severity": 5,
+    "createdAt": "2025-01-14T12:00:00Z",
     "assignee": "bob",
-    "tags": ["performance"]
+    "tags": ["performance", "ui"]
   },
   {
     "id": "3",
     "title": "Add dark mode",
     "status": "Done",
     "priority": "low",
-    "severity": 1,
-    "createdAt": "2025-07-07T09:30:00Z",
+    "severity": 2,
+    "createdAt": "2025-01-13T09:30:00Z",
     "assignee": "carol",
-    "tags": ["ui"]
+    "tags": ["ui", "feature"]
+  },
+  {
+    "id": "4",
+    "title": "Database connection timeout",
+    "status": "Backlog",
+    "priority": "high",
+    "severity": 9,
+    "createdAt": "2025-01-16T08:00:00Z",
+    "assignee": "alice",
+    "tags": ["database", "critical", "bug"]
+  },
+  {
+    "id": "5",
+    "title": "Update user documentation",
+    "status": "In Progress",
+    "priority": "low",
+    "severity": 1,
+    "createdAt": "2025-01-12T14:00:00Z",
+    "assignee": "david",
+    "tags": ["documentation", "content"]
+  },
+  {
+    "id": "6",
+    "title": "Security vulnerability in API",
+    "status": "Backlog",
+    "priority": "high",
+    "severity": 10,
+    "createdAt": "2025-01-17T11:00:00Z",
+    "assignee": "alice",
+    "tags": ["security", "critical", "api"]
+  },
+  {
+    "id": "7",
+    "title": "Mobile responsive design",
+    "status": "In Progress",
+    "priority": "medium",
+    "severity": 4,
+    "createdAt": "2025-01-11T16:00:00Z",
+    "assignee": "bob",
+    "tags": ["ui", "mobile", "responsive"]
+  },
+  {
+    "id": "8",
+    "title": "Email notification system",
+    "status": "Done",
+    "priority": "medium",
+    "severity": 3,
+    "createdAt": "2025-01-10T13:00:00Z",
+    "assignee": "carol",
+    "tags": ["email", "notification", "feature"]
   }
 ]
