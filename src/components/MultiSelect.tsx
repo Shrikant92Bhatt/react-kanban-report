@@ -30,8 +30,7 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    const handleOptionToggle = (option: string, event: React.MouseEvent) => {
-        event.stopPropagation();
+    const handleOptionToggle = (option: string) => {
         const newSelection = selectedValues.includes(option)
             ? selectedValues.filter(value => value !== option)
             : [...selectedValues, option];
@@ -58,24 +57,23 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
     return (
         <div className="multi-select-container" ref={dropdownRef}>
             <label className="multi-select-label">{label}:</label>
-            <div 
-                className={`multi-select-dropdown ${isOpen ? 'open' : ''}`}
-                onClick={handleDropdownClick}
-            >
-                <div className="multi-select-display">
+            <div className={`multi-select-dropdown ${isOpen ? 'open' : ''}`}>
+                <div 
+                    className="multi-select-display"
+                    onClick={handleDropdownClick}
+                >
                     <span className="multi-select-text">{getDisplayText()}</span>
                     <span className="multi-select-arrow">▼</span>
                 </div>
-                
                 {isOpen && (
-                    <div className="multi-select-options" onClick={(e) => e.stopPropagation()}>
+                    <div className="multi-select-options">
                         <div className="multi-select-option select-all" onClick={handleSelectAll}>
                             <label className="checkbox-label">
                                 <input
                                     type="checkbox"
                                     checked={selectedValues.length === options.length}
-                                    readOnly
                                     className="checkbox-input"
+                                    readOnly
                                 />
                                 <span className="checkbox-custom"></span>
                                 <span className="checkbox-text">
@@ -86,23 +84,27 @@ export const MultiSelect: React.FC<MultiSelectProps> = ({
                         
                         <div className="multi-select-divider"></div>
                         
-                        {options.map(option => (
-                            <div key={option} className="multi-select-option" onClick={(e) => handleOptionToggle(option, e)}>
-                                <label className="checkbox-label">
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedValues.includes(option)}
-                                        readOnly
-                                        className="checkbox-input"
-                                    />
-                                    <span className="checkbox-custom"></span>
-                                    <span className="checkbox-text">{option}</span>
-                                </label>
-                            </div>
-                        ))}
+                        {options.length === 0 ? (
+                            <div className="multi-select-no-options">No options found</div>
+                        ) : (
+                            options.map(option => (
+                                <div key={option} className="multi-select-option">
+                                    <label className="checkbox-label">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedValues.includes(option)}
+                                            onChange={() => handleOptionToggle(option)}
+                                            className="checkbox-input"
+                                        />
+                                        <span className="checkbox-custom"></span>
+                                        <span className="checkbox-text">{option}</span>
+                                    </label>
+                                </div>
+                            ))
+                        )}
                     </div>
                 )}
             </div>
         </div>
     );
-}; 
+};
