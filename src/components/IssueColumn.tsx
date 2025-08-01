@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react'
+import { useDroppable } from '@dnd-kit/core';
 import { Issue, IssueStatus } from '../types';
 import IssueCard from './IssueCard';
 
@@ -8,16 +9,50 @@ type IssueColumnProps = {
 }
 
 const IssueColumn = ({ status, issues }: IssueColumnProps) => {
-    const columnIssue = useMemo(()=> issues.filter((issue)=> issue.status === status ),[]);
+    const {setNodeRef, isOver, active} = useDroppable({
+        id: status,
+    });
+    
+    const columnIssue = useMemo(()=> issues.filter((issue)=> issue.status === status ),[issues, status]);
+
+    const isValidDrop = useMemo(() => {
+        if (!isOver || !active) return false;
+        
+        const draggedIssue = issues.find(issue => issue.id === active.id);
+        if (!draggedIssue) return false;
+        
+        const currentStatus = draggedIssue.status;
+        const targetStatus = status;
+        
+        if (currentStatus === 'Backlog') {
+            return targetStatus === 'In Progress';
+        }
+        
+        if (currentStatus === 'In Progress') {
+            return targetStatus === 'Backlog' || targetStatus === 'Done';
+        }
+        
+        if (currentStatus === 'Done') {
+            return targetStatus === 'In Progress';
+        }
+        
+        return false;
+    }, [isOver, active, issues, status]);
+
     return (
-        <div className="column">
+        <div 
+            ref={setNodeRef}
+            className={`column ${isOver ? (isValidDrop ? 'drag-over-valid' : 'drag-over-invalid') : ''}`}
+        >
             <h2>{status}</h2>
             <ul className="issue-list">
                 {columnIssue.length === 0 && (
-                    <li>No issue found!</li>
+                    <li className="empty-state">
+                        {isOver ? (isValidDrop ? 'Drop here!' : 'Invalid move!') : 'No issue found!'}
+                    </li>
                 )}
 
-                {columnIssue.length && columnIssue?.map((issue, idx) => (
+                {columnIssue.length > 0 && columnIssue?.map((issue, idx) => (
                     <li key={idx} className="issue-row">
                         <IssueCard {...issue} />
                     </li>
