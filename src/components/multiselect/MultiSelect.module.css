@@ -1,0 +1,237 @@
+.multiSelect {
+    position: relative;
+    width: 100%;
+}
+
+.trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 48px;
+}
+
+.trigger:hover:not(.disabled) {
+    border-color: #007bff;
+}
+
+.trigger.open {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.trigger.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: #f8f9fa;
+}
+
+.selectedItems {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.selectedItem {
+    background-color: #e7f3ff;
+    color: #007bff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.removeButton {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0;
+    line-height: 1;
+}
+
+.removeButton:hover {
+    color: #dc3545;
+}
+
+.placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.arrow {
+    color: #6c757d;
+    font-size: 0.75rem;
+    transition: transform 0.2s ease;
+    margin-left: 0.5rem;
+}
+
+.trigger.open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 2px solid #007bff;
+    border-top: none;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    max-height: 300px;
+    overflow: hidden;
+    animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.searchContainer {
+    padding: 0.75rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.optionsList {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.option:hover {
+    background-color: #f8f9fa;
+}
+
+.option.selected {
+    background-color: #e3f2fd;
+}
+
+.checkbox {
+    width: 16px;
+    height: 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.option.selected .checkbox {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.checkmark {
+    width: 8px;
+    height: 8px;
+    background: white;
+    border-radius: 1px;
+}
+
+.noResults {
+    padding: 1rem;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+/* Scrollbar styling */
+.optionsList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.optionsList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.optionsList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.optionsList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .dropdown {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        max-width: 400px;
+        max-height: 80vh;
+        border-radius: 8px;
+        border: 2px solid #007bff;
+    }
+
+    .optionsList {
+        max-height: 60vh;
+    }
+
+    .option {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .trigger {
+        padding: 0.5rem 0.75rem;
+        min-height: 44px;
+    }
+
+    .selectedItem {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.4rem;
+    }
+} 

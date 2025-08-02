@@ -1,0 +1,316 @@
+.userDropdown {
+    position: relative;
+    width: 100%;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.dropdownTrigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 40px;
+}
+
+.dropdownTrigger:hover:not(.disabled) {
+    border-color: #9ca3af;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.dropdownTrigger.open {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.dropdownTrigger.disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.selectedUser {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+}
+
+.userAvatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.userInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.userName {
+    font-weight: 500;
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userEmail {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.placeholder {
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.arrow {
+    color: #6b7280;
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 8px;
+}
+
+.dropdownTrigger.open .arrow {
+    transform: rotate(180deg);
+}
+
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    z-index: 1000;
+    max-height: 300px;
+    overflow: hidden;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.searchContainer {
+    padding: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.searchInput {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.searchInput:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+}
+
+.usersList {
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.userOption {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.userOption:hover {
+    background-color: #f3f4f6;
+}
+
+.userOption.selected {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+.userOptionAvatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.userOptionInfo {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+}
+
+.userOptionName {
+    font-weight: 500;
+    color: #1f2937;
+    font-size: 14px;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.userOptionEmail {
+    font-size: 12px;
+    color: #6b7280;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.checkmark {
+    width: 16px;
+    height: 16px;
+    background: #28a745;
+    border-radius: 50%;
+    margin-left: auto;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.checkmark::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%) rotate(45deg);
+    width: 4px;
+    height: 8px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+}
+
+.noResults {
+    padding: 12px;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.loading {
+    opacity: 0.7;
+}
+
+.loading .dropdownTrigger {
+    cursor: not-allowed;
+}
+
+/* Scrollbar styling */
+.usersList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.usersList::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 3px;
+}
+
+.usersList::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 3px;
+}
+
+.usersList::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .dropdownTrigger {
+        padding: 10px 12px;
+        min-height: 44px;
+    }
+    
+    .userAvatar,
+    .userOptionAvatar {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+    }
+    
+    .userName,
+    .userOptionName {
+        font-size: 16px;
+    }
+    
+    .userEmail,
+    .userOptionEmail {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .dropdownTrigger {
+        padding: 12px;
+        min-height: 48px;
+    }
+    
+    .userAvatar,
+    .userOptionAvatar {
+        width: 32px;
+        height: 32px;
+        font-size: 16px;
+    }
+    
+    .userName,
+    .userOptionName {
+        font-size: 18px;
+    }
+    
+    .userEmail,
+    .userOptionEmail {
+        font-size: 16px;
+    }
+} 

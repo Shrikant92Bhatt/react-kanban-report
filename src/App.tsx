@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { BoardPage } from './pages/BoardPage';
 import { IssueDetailPage } from './pages/IssueDetailPage';
 import { SettingsPage } from './pages/SettingsPage';
-import { Navigation } from './components/Navigation';
+import { Navigation } from './components/navigation/Navigation';
 
 export const App = () => {
 

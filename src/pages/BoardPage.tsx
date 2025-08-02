@@ -2,19 +2,29 @@ import React, { useEffect, useState } from 'react';
 import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/core';
 import IssueColumn from '../components/IssueColumn';
 import IssueCard from '../components/IssueCard';
-import { FilterSort } from '../components/FilterSort';
+import { FilterSort } from '../components/filter/FilterSort';
 import { ISSUE_STATUSES } from '../constants/currentUser';
 import { useIssueStore } from '../store/issueStore';
-import { IssueStatus, Issue } from '../types';
+import { useUserStore } from '../store/userStore';
+import { Issue, IssueStatus } from '../types';
 
 export const BoardPage = () => {
     const { issues, fetchIssues, loading, updateIssueStatus } = useIssueStore();
+    const { users, fetchUsers } = useUserStore();
     const [activeIssue, setActiveIssue] = useState<Issue | null>(null);
     const [filteredIssues, setFilteredIssues] = useState<Issue[]>(issues);
 
     useEffect(() => {
-        fetchIssues();
-    }, [fetchIssues]);
+        if (users.length === 0) {
+            fetchUsers();
+        }
+    }, [users.length, fetchUsers]);
+
+    useEffect(() => {
+        if (issues.length === 0) {
+            fetchIssues();
+        }
+    }, [fetchIssues, issues.length]);
 
     useEffect(() => {
         setFilteredIssues(issues);
@@ -33,7 +43,7 @@ export const BoardPage = () => {
         
         if (over && active.id !== over.id) {
             const issueId = active.id as string;
-            const newStatus = over.id as IssueStatus;
+                         const newStatus = over.id as IssueStatus;
             const currentIssue = issues.find(issue => issue.id === issueId);
             
             if (currentIssue && currentIssue.status !== newStatus) {
@@ -77,7 +87,7 @@ export const BoardPage = () => {
                 />
                 
                 <div className="board-container">
-                    {ISSUE_STATUSES.map((status: IssueStatus)=> (
+                                         {ISSUE_STATUSES.map((status: IssueStatus)=> (
                         <IssueColumn 
                             issues={filteredIssues} 
                             status={status} 

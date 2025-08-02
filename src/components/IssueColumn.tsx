@@ -2,6 +2,8 @@ import React, { useMemo } from 'react'
 import { useDroppable } from '@dnd-kit/core';
 import { Issue, IssueStatus } from '../types';
 import IssueCard from './IssueCard';
+import { ISSUE } from '../constants/strings';
+import styles from './IssueColumn.module.css';
 
 type IssueColumnProps = {
     status: IssueStatus;
@@ -42,18 +44,18 @@ const IssueColumn = ({ status, issues }: IssueColumnProps) => {
     return (
         <div 
             ref={setNodeRef}
-            className={`column ${isOver ? (isValidDrop ? 'drag-over-valid' : 'drag-over-invalid') : ''}`}
+            className={`${styles.column} ${isOver ? (isValidDrop ? styles.dragOverValid : styles.dragOverInvalid) : ''}`}
         >
             <h2>{status}</h2>
-            <ul className="issue-list">
+            <ul className={styles.issueList}>
                 {columnIssue.length === 0 && (
-                    <li className="empty-state">
-                        {isOver ? (isValidDrop ? 'Drop here!' : 'Invalid move!') : 'No issue found!'}
+                    <li className={styles.emptyState}>
+                        {isOver ? (isValidDrop ? ISSUE.DROP_HERE : ISSUE.INVALID_MOVE) : ISSUE.NO_ISSUE_FOUND}
                     </li>
                 )}
 
                 {columnIssue.length > 0 && columnIssue?.map((issue, idx) => (
-                    <li key={idx} className="issue-row">
+                    <li key={idx} className={styles.issueRow}>
                         <IssueCard {...issue} />
                     </li>
                 ))}
