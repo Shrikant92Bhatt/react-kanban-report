@@ -1,17 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { useNavigate } from 'react-router-dom';
 import { Issue } from '../types'
 import "./IssueCard.css";
 
 type IssueCardProps = Issue
 
 const IssueCard = ({title, assignee, createdAt, priority, severity, status, tags, id}: IssueCardProps) => {
+    const navigate = useNavigate();
     const {attributes, listeners, setNodeRef, transform, isDragging} = useDraggable({
         id: id,
-        data: {
-            issue: {title, assignee, createdAt, priority, severity, status, tags, id}
-        }
+        data: { issue: {title, assignee, createdAt, priority, severity, status, tags, id} },
     });
 
     const getSeverityColor = (severity: number) => {
@@ -30,22 +30,74 @@ const IssueCard = ({title, assignee, createdAt, priority, severity, status, tags
         opacity: isDragging ? 0.5 : 1,
     };
 
+    const dragStarted = useRef(false);
+    const pointerDownPos = useRef<{x:number, y:number} | null>(null);
+    const DRAG_THRESHOLD = 5;
+
+    const handlePointerDown = (event: React.PointerEvent) => {
+        dragStarted.current = false;
+        pointerDownPos.current = { x: event.clientX, y: event.clientY };
+    };
+
+    const handlePointerMove = (event: React.PointerEvent) => {
+        if (!pointerDownPos.current) return;
+        const dx = Math.abs(event.clientX - pointerDownPos.current.x);
+        const dy = Math.abs(event.clientY - pointerDownPos.current.y);
+        if (dx > DRAG_THRESHOLD || dy > DRAG_THRESHOLD) {
+            dragStarted.current = true;
+        }
+    };
+
+    const handleClick = () => {
+        if (!dragStarted.current) {
+            navigate(`/issue/${id}`);
+        }
+    };
+
     return (
-        <div 
+        <div
             ref={setNodeRef}
-            style={style}
-            {...listeners}
-            {...attributes}
             className={`issue-card ${isDragging ? 'dragging' : ''}`}
+            style={style}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onClick={handleClick}
         >
-            <div className="card-header">
+            {/* Make header draggable by spreading listeners and attributes here */}
+            <div
+                className="card-header"
+                {...listeners}
+                {...attributes}
+                style={{ cursor: 'grab' }}
+                onPointerDown={(e) => {
+                    handlePointerDown(e);
+                    listeners?.onPointerDown?.(e);
+                }}
+            >
                 <div className="priority-indicator" data-priority={priority}>
                     <span className="priority-dot"></span>
                 </div>
                 <div className="issue-id">ISSUE-{id}</div>
             </div>
             
-            <h6 className="title">{title}</h6>
+            {/* Rest of the card is clickable but not draggable */}
+            <h6
+                className="title issue-title-link"
+                onClick={(e) => {
+                    e.stopPropagation();
+                    navigate(`/issue/${id}`);
+                }}
+                tabIndex={0}
+                onKeyDown={e => {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.stopPropagation();
+                        navigate(`/issue/${id}`);
+                    }
+                }}
+                style={{ cursor: "pointer" }}
+            >
+                {title}
+            </h6>
             
             <div className="meta-info">
                 <div className="meta-row">
