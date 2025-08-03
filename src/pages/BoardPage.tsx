@@ -5,6 +5,7 @@ import IssueCard from '../components/IssueCard';
 import { FilterSort } from '../components/filter/FilterSort';
 import { RecentlyAccessedSidebar } from '../components/RecentlyAccessedSidebar';
 import { UserSwitcher } from '../components/UserSwitcher';
+import { UndoButton } from '../components/UndoButton';
 import { ISSUE_STATUSES } from '../constants/currentUser';
 import { useIssueStore } from '../store/issueStore';
 import { useUsersListStore } from '../store/usersListStore';
@@ -110,6 +111,7 @@ export const BoardPage = () => {
             </div>
             
             <RecentlyAccessedSidebar />
+            <UndoButton />
             
             <DragOverlay>
                 {activeIssue ? <IssueCard {...activeIssue} /> : null}

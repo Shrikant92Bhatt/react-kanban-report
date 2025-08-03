@@ -1,0 +1,43 @@
+.undoButton {
+    background: var(--priority-medium);
+    color: var(--text-light);
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    position: fixed;
+    top: 80px;
+    right: 300px;
+    z-index: 1000;
+    box-shadow: 0 2px 8px var(--shadow-medium);
+    animation: slideIn 0.3s ease-out;
+}
+
+.undoButton:hover {
+    background: var(--priority-high);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .undoButton {
+        top: 120px;
+        right: var(--spacing-md);
+        font-size: var(--text-xs);
+        padding: var(--spacing-xs) var(--spacing-sm);
+    }
+} 
