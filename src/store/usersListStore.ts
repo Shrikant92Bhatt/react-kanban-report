@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { User } from '../types';
+import { mockFetchUsers } from '../utils/api';
 
 interface UsersListStore {
     users: User[];
@@ -18,20 +19,8 @@ export const useUsersListStore = create<UsersListStore>((set, get) => ({
     fetchUsers: async () => {
         set({ loading: true, error: null });
         try {
-            const mockUsers: User[] = [
-                { id: 'alice', name: 'Alice Johnson', email: 'alice@company.com', avatar: 'AJ' },
-                { id: 'bob', name: 'Bob Smith', email: 'bob@company.com', avatar: 'BS' },
-                { id: 'carol', name: 'Carol Davis', email: 'carol@company.com', avatar: 'CD' },
-                { id: 'david', name: 'David Wilson', email: 'david@company.com', avatar: 'DW' },
-                { id: 'emma', name: 'Emma Brown', email: 'emma@company.com', avatar: 'EB' },
-                { id: 'frank', name: 'Frank Miller', email: 'frank@company.com', avatar: 'FM' },
-                { id: 'grace', name: 'Grace Taylor', email: 'grace@company.com', avatar: 'GT' },
-                { id: 'henry', name: 'Henry Anderson', email: 'henry@company.com', avatar: 'HA' }
-            ];
-
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            set({ users: mockUsers, loading: false });
+            const users = await mockFetchUsers();
+            set({ users, loading: false });
         } catch (error) {
             set({ 
                 error: error instanceof Error ? error.message : 'Failed to fetch users', 

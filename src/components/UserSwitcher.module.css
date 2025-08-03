@@ -1,23 +1,26 @@
 .userSwitcher {
     display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+    flex-direction: column;
+    gap: var(--spacing-sm);
     background: var(--bg-secondary);
     border: 1px solid var(--border-primary);
     border-radius: var(--radius-md);
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-md);
     font-size: var(--text-sm);
+    min-width: 280px;
 }
 
 .currentUser {
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xs);
+    gap: var(--spacing-sm);
 }
 
 .userName {
     font-weight: var(--font-medium);
     color: var(--text-primary);
+    white-space: nowrap;
+    font-size: var(--text-base);
 }
 
 .userRole {
@@ -27,6 +30,8 @@
     font-weight: var(--font-medium);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    display: inline-block;
+    width: fit-content;
 }
 
 .admin {
@@ -51,26 +56,49 @@
     transition: var(--transition-fast);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: nowrap;
+    min-width: 120px;
+    text-align: center;
 }
 
 .switchButton:hover {
-    background: var(--priority-low);
+    background: var(--priority-medium);
     transform: translateY(-1px);
-    box-shadow: 0 2px 8px var(--shadow-low);
+    box-shadow: 0 2px 8px var(--shadow-medium);
+}
+
+.switchButton:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 4px var(--shadow-low);
+}
+
+.roleAndButton {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
 }
 
 @media (max-width: 768px) {
     .userSwitcher {
-        flex-direction: column;
-        gap: var(--spacing-sm);
         padding: var(--spacing-sm);
+        min-width: auto;
+        width: 100%;
     }
     
     .currentUser {
         align-items: center;
+        text-align: center;
+    }
+    
+    .roleAndButton {
+        flex-direction: column;
+        gap: var(--spacing-sm);
+        width: 100%;
     }
     
     .switchButton {
         width: 100%;
+        min-width: auto;
     }
 } 

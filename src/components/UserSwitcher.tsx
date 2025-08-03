@@ -14,21 +14,27 @@ export const UserSwitcher: React.FC = () => {
     }
   };
 
+  const nextRole = user.role === 'admin' ? 'contributor' : 'admin';
+  const nextRoleDisplay = user.role === 'admin' ? 'Contributor' : 'Admin';
+
   return (
     <div className={styles.userSwitcher}>
       <div className={styles.currentUser}>
         <span className={styles.userName}>{user.name}</span>
-        <span className={`${styles.userRole} ${styles[user.role]}`}>
-          {user.role}
-        </span>
+        <div className={styles.roleAndButton}>
+          <span className={`${styles.userRole} ${styles[user.role]}`}>
+            {user.role}
+          </span>
+          <button 
+            className={styles.switchButton}
+            onClick={handleUserSwitch}
+            title={`Switch to ${nextRole} role`}
+            aria-label={`Switch from ${user.role} to ${nextRole} role`}
+          >
+            Switch to {nextRoleDisplay}
+          </button>
+        </div>
       </div>
-      <button 
-        className={styles.switchButton}
-        onClick={handleUserSwitch}
-        title={`Switch to ${user.role === 'admin' ? 'contributor' : 'admin'} role`}
-      >
-        Switch to {user.role === 'admin' ? 'Contributor' : 'Admin'}
-      </button>
     </div>
   );
 }; 

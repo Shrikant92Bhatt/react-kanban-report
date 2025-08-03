@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import dayjs from 'dayjs';
-import { Issue, IssueStatus, IssuePriority } from '../../types';
+import { Issue } from '../../types';
 import { FILTER, BUTTONS, ISSUE_STATUS, ISSUE_PRIORITY, LABELS } from '../../constants/strings';
 import { useUsersListStore } from '../../store/usersListStore';
+import { calculatePriorityScore } from '../../hooks/usePriorityScore';
 import styles from './FilterSort.module.css';
 
 interface FilterSortProps {
@@ -17,14 +18,14 @@ export const FilterSort: React.FC<FilterSortProps> = ({
     const { users, fetchUsers, loading: usersLoading } = useUsersListStore();
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [sortBy, setSortBy] = useState('priorityScore');
     const [filters, setFilters] = useState({
-        status: FILTER.ALL as IssueStatus | 'all',
-        priority: FILTER.ALL as IssuePriority | 'all',
-        assignee: FILTER.ALL as string | 'all'
+        status: 'all',
+        priority: 'all',
+        assignee: 'all',
+        severity: 'all'
     });
-    const [sortBy, setSortBy] = useState('createdAt');
 
-    // Ensure users are loaded
     useEffect(() => {
         if (users.length === 0) {
             fetchUsers();
@@ -40,61 +41,78 @@ export const FilterSort: React.FC<FilterSortProps> = ({
 
     const clearFilters = () => {
         setFilters({
-            status: FILTER.ALL,
-            priority: FILTER.ALL,
-            assignee: FILTER.ALL
+            status: 'all',
+            priority: 'all',
+            assignee: 'all',
+            severity: 'all'
         });
         setSearchTerm('');
+        setSortBy('priorityScore');
     };
 
-    const hasActiveFilters = filters.status !== FILTER.ALL || filters.priority !== FILTER.ALL || filters.assignee !== FILTER.ALL || searchTerm.trim() !== '';
+    const hasActiveFilters = useMemo(() => {
+        return Object.values(filters).some(value => value !== 'all') || searchTerm !== '';
+    }, [filters, searchTerm]);
 
-    // Apply filters and sorting
-    useEffect(() => {
+    useMemo(() => {
         let filtered = [...issues];
 
         // Apply search filter
-        if (searchTerm.trim() !== '') {
+        if (searchTerm) {
             const searchLower = searchTerm.toLowerCase();
-            filtered = filtered.filter(issue => 
+            filtered = filtered.filter(issue =>
                 issue.title.toLowerCase().includes(searchLower) ||
-                issue.id.toLowerCase().includes(searchLower) ||
-                (issue.assignee && issue.assignee.toLowerCase().includes(searchLower)) ||
                 issue.tags.some(tag => tag.toLowerCase().includes(searchLower))
             );
         }
 
         // Apply status filter
-        if (filters.status !== FILTER.ALL) {
-            filtered = filtered.filter(issue => issue.status === filters.status);
+        if (filters.status !== 'all') {
+            filtered = filtered.filter(issue => issue.status.toLowerCase() === filters.status);
         }
 
         // Apply priority filter
-        if (filters.priority !== FILTER.ALL) {
+        if (filters.priority !== 'all') {
             filtered = filtered.filter(issue => issue.priority === filters.priority);
         }
 
         // Apply assignee filter
-        if (filters.assignee !== FILTER.ALL) {
+        if (filters.assignee !== 'all') {
             filtered = filtered.filter(issue => issue.assignee === filters.assignee);
+        }
+
+        // Apply severity filter
+        if (filters.severity !== 'all') {
+            const severityValue = parseInt(filters.severity);
+            filtered = filtered.filter(issue => issue.severity === severityValue);
         }
 
         // Apply sorting
         filtered.sort((a, b) => {
             switch (sortBy) {
                 case 'createdAt':
-                    return dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
+                    const dateComparison = dayjs(b.createdAt).valueOf() - dayjs(a.createdAt).valueOf();
+                    return dateComparison !== 0 ? dateComparison : a.id.localeCompare(b.id);
                 case 'priority':
                     const priorityOrder = { high: 3, medium: 2, low: 1 };
-                    return priorityOrder[b.priority] - priorityOrder[a.priority];
+                    const priorityComparison = priorityOrder[b.priority] - priorityOrder[a.priority];
+                    return priorityComparison !== 0 ? priorityComparison : a.id.localeCompare(b.id);
                 case 'severity':
-                    return b.severity - a.severity;
+                    const severityComparison = b.severity - a.severity;
+                    return severityComparison !== 0 ? severityComparison : a.id.localeCompare(b.id);
+                case 'priorityScore':
+                    const scoreA = calculatePriorityScore(a);
+                    const scoreB = calculatePriorityScore(b);
+                    const scoreComparison = scoreB - scoreA;
+                    return scoreComparison !== 0 ? scoreComparison : a.id.localeCompare(b.id);
                 case 'title':
-                    return a.title.localeCompare(b.title);
+                    const titleComparison = a.title.localeCompare(b.title);
+                    return titleComparison !== 0 ? titleComparison : a.id.localeCompare(b.id);
                 case 'assignee':
-                    return (a.assignee || '').localeCompare(b.assignee || '');
+                    const assigneeComparison = (a.assignee || '').localeCompare(b.assignee || '');
+                    return assigneeComparison !== 0 ? assigneeComparison : a.id.localeCompare(b.id);
                 default:
-                    return 0;
+                    return a.id.localeCompare(b.id);
             }
         });
 
@@ -189,6 +207,7 @@ export const FilterSort: React.FC<FilterSortProps> = ({
                             onChange={(e) => setSortBy(e.target.value)}
                             className={styles.filterSelect}
                         >
+                            <option value="priorityScore">Priority Score</option>
                             <option value="createdAt">{FILTER.CREATED_DATE}</option>
                             <option value="priority">{LABELS.PRIORITY}</option>
                             <option value="severity">{FILTER.SEVERITY}</option>

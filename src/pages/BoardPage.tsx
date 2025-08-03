@@ -4,7 +4,6 @@ import IssueColumn from '../components/IssueColumn';
 import IssueCard from '../components/IssueCard';
 import { FilterSort } from '../components/filter/FilterSort';
 import { RecentlyAccessedSidebar } from '../components/RecentlyAccessedSidebar';
-import { UserSwitcher } from '../components/UserSwitcher';
 import { UndoButton } from '../components/UndoButton';
 import { ISSUE_STATUSES } from '../constants/currentUser';
 import { useIssueStore } from '../store/issueStore';
@@ -13,7 +12,7 @@ import { useUserStore } from '../store/userStore';
 import { Issue, IssueStatus } from '../types';
 
 export const BoardPage = () => {
-    const { issues, fetchIssues, loading, updateIssueStatus } = useIssueStore();
+    const { issues, fetchIssues, loading, updateIssueStatus, error } = useIssueStore();
     const { users, fetchUsers } = useUsersListStore();
     const { canMoveIssues } = useUserStore();
     const [activeIssue, setActiveIssue] = useState<Issue | null>(null);
@@ -84,16 +83,63 @@ export const BoardPage = () => {
         return false;
     };
 
-    if(loading) {
-        return <div>Loading...</div>
+    if (loading && issues.length === 0) {
+        return (
+            <div style={{ 
+                display: 'flex', 
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '50vh',
+                fontSize: '1.2rem',
+                color: 'var(--text-secondary)'
+            }}>
+                Loading issues...
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div style={{ 
+                display: 'flex', 
+                flexDirection: 'column',
+                justifyContent: 'center', 
+                alignItems: 'center', 
+                height: '50vh',
+                gap: '1rem'
+            }}>
+                <div style={{ 
+                    fontSize: '1.2rem',
+                    color: 'var(--priority-high)'
+                }}>
+                    Error loading issues
+                </div>
+                <div style={{ 
+                    fontSize: '1rem',
+                    color: 'var(--text-secondary)'
+                }}>
+                    {error}
+                </div>
+                <button 
+                    onClick={fetchIssues}
+                    style={{
+                        padding: '0.5rem 1rem',
+                        background: 'var(--primary-blue)',
+                        color: 'white',
+                        border: 'none',
+                        borderRadius: '4px',
+                        cursor: 'pointer'
+                    }}
+                >
+                    Retry
+                </button>
+            </div>
+        );
     }
     
     return (
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <div style={{ padding: '1rem', marginRight: '280px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                    <UserSwitcher />
-                </div>
                 <FilterSort 
                     issues={issues} 
                     onFilteredIssues={setFilteredIssues} 
