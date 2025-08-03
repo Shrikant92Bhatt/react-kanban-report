@@ -3,7 +3,8 @@ import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 import { useNavigate } from 'react-router-dom';
 import { Issue } from '../types'
-import { useUserStore } from '../store/userStore';
+import { useUsersListStore } from '../store/usersListStore';
+import { useRecentlyAccessedStore } from '../store/recentlyAccessedStore';
 import { USER, ISSUE, LABELS } from '../constants/strings';
 import styles from "./IssueCard.module.css";
 
@@ -11,7 +12,8 @@ type IssueCardProps = Issue
 
 const IssueCard = ({title, assignee, createdAt, priority, severity, status, tags, id}: IssueCardProps) => {
     const navigate = useNavigate();
-    const { getUserName, users, fetchUsers } = useUserStore();
+    const { getUserName, users, fetchUsers } = useUsersListStore();
+    const { addRecentlyAccessed } = useRecentlyAccessedStore();
     const [assigneeName, setAssigneeName] = useState<string>(assignee || USER.UNASSIGNED);
     const {attributes, listeners, setNodeRef, transform, isDragging} = useDraggable({
         id: id,
@@ -71,6 +73,7 @@ const IssueCard = ({title, assignee, createdAt, priority, severity, status, tags
 
     const handleClick = () => {
         if (!dragStarted.current) {
+            addRecentlyAccessed({ id, title });
             navigate(`/issue/${id}`);
         }
     };

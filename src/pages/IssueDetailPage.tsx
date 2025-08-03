@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useIssueStore } from '../store/issueStore';
+import { useUsersListStore } from '../store/usersListStore';
 import { useUserStore } from '../store/userStore';
+import { useRecentlyAccessedStore } from '../store/recentlyAccessedStore';
 import { Issue } from '../types';
 import { IssueDetailHeader } from '../components/detail/IssueDetailHeader';
 import { IssueDetailTitle } from '../components/detail/IssueDetailTitle';
@@ -18,7 +20,9 @@ export const IssueDetailPage = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { issues, fetchIssues, updateIssue, loading, error } = useIssueStore();
-    const { getUserName, users, fetchUsers } = useUserStore();
+    const { getUserName, users, fetchUsers } = useUsersListStore();
+    const { canEditIssues, canUpdateStatus } = useUserStore();
+    const { addRecentlyAccessed } = useRecentlyAccessedStore();
     const [issue, setIssue] = useState<Issue | null>(null);
     const [isEditing, setIsEditing] = useState(false);
     const [editedIssue, setEditedIssue] = useState<Partial<Issue>>({});
@@ -48,12 +52,15 @@ export const IssueDetailPage = () => {
             if (issues.length > 0) {
                 const foundIssue = issues.find(issue => issue.id === id);
                 setIssue(foundIssue || null);
+                if (foundIssue) {
+                    addRecentlyAccessed({ id: foundIssue.id, title: foundIssue.title });
+                }
                 setIsLoading(false);
             } else {
                 fetchIssues();
             }
         }
-    }, [id, issues, fetchIssues]);
+    }, [id, issues, fetchIssues, addRecentlyAccessed]);
 
     useEffect(() => {
         if (issue) {
@@ -140,6 +147,18 @@ export const IssueDetailPage = () => {
             });
         }
         setIsEditing(false);
+    };
+
+    const handleMarkAsResolved = async () => {
+        if (!issue || !canUpdateStatus) return;
+        
+        try {
+            await updateIssue(issue.id, { status: 'Done' });
+            setShowSuccessMessage(true);
+            setTimeout(() => setShowSuccessMessage(false), 3000);
+        } catch (error) {
+            console.error('Failed to mark issue as resolved:', error);
+        }
     };
 
 
@@ -240,7 +259,11 @@ export const IssueDetailPage = () => {
                     onEdit={() => setIsEditing(true)}
                     onSave={handleSave}
                     onCancel={handleCancel}
+                    onMarkAsResolved={handleMarkAsResolved}
                     isSaving={loading}
+                    canEdit={canEditIssues()}
+                    canUpdateStatus={canUpdateStatus()}
+                    status={issue.status}
                 />
             </div>
         </div>

@@ -1,0 +1,186 @@
+.settingsPage {
+    padding: var(--spacing-2xl);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-2xl);
+    padding-bottom: var(--spacing-lg);
+    border-bottom: 2px solid var(--border-primary);
+}
+
+.header h1 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: var(--text-3xl);
+    font-weight: var(--font-semibold);
+}
+
+.headerControls {
+    display: flex;
+    gap: var(--spacing-lg);
+    align-items: center;
+}
+
+.settingsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: var(--spacing-2xl);
+}
+
+.settingsSection {
+    background: var(--bg-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-xl);
+    box-shadow: 0 2px 8px var(--shadow-light);
+    border: 1px solid var(--border-primary);
+}
+
+.settingsSection h2 {
+    margin: 0 0 var(--spacing-lg) 0;
+    color: var(--text-primary);
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--border-primary);
+}
+
+.settingItem {
+    margin-bottom: var(--spacing-xl);
+}
+
+.settingItem:last-child {
+    margin-bottom: 0;
+}
+
+.settingLabel {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    font-weight: var(--font-medium);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.settingDescription {
+    margin: var(--spacing-sm) 0 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    line-height: 1.4;
+}
+
+.checkbox {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-blue);
+    cursor: pointer;
+}
+
+.select {
+    margin-left: var(--spacing-sm);
+    padding: var(--spacing-sm);
+    border: 1px solid var(--border-secondary);
+    border-radius: var(--radius-sm);
+    background: var(--bg-primary);
+    font-size: var(--text-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+}
+
+.select:disabled {
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.select:focus {
+    outline: none;
+    border-color: var(--border-focus);
+    box-shadow: 0 0 0 2px var(--shadow-primary);
+}
+
+.button {
+    background: var(--primary-blue);
+    color: var(--text-light);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-xl);
+    border-radius: var(--radius-sm);
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    transition: var(--transition-fast);
+}
+
+.button:hover:not(:disabled) {
+    background: var(--primary-blue-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-primary);
+}
+
+.button:disabled {
+    background: var(--gray-400);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.lastSync {
+    margin: var(--spacing-sm) 0 0 0;
+    color: var(--text-secondary);
+    font-size: var(--text-sm);
+    font-style: italic;
+}
+
+.currentUserInfo {
+    margin: var(--spacing-sm) 0;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+.permissionsList {
+    margin: var(--spacing-sm) 0 0 var(--spacing-lg);
+    padding: 0;
+    list-style: none;
+}
+
+.permissionsList li {
+    margin: var(--spacing-xs) 0;
+    color: var(--text-primary);
+    font-size: var(--text-sm);
+}
+
+.systemInfo {
+    margin: var(--spacing-sm) 0;
+    color: var(--text-primary);
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .settingsPage {
+        padding: var(--spacing-lg);
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: var(--spacing-lg);
+        align-items: flex-start;
+    }
+    
+    .headerControls {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
+    .settingsGrid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    .settingsSection {
+        padding: var(--spacing-lg);
+    }
+} 

@@ -7,7 +7,11 @@ interface IssueDetailActionsProps {
     onEdit: () => void;
     onSave: () => void;
     onCancel: () => void;
+    onMarkAsResolved: () => void;
     isSaving: boolean;
+    canEdit: boolean;
+    canUpdateStatus: boolean;
+    status: string;
 }
 
 export const IssueDetailActions: React.FC<IssueDetailActionsProps> = ({
@@ -15,7 +19,11 @@ export const IssueDetailActions: React.FC<IssueDetailActionsProps> = ({
     onEdit,
     onSave,
     onCancel,
-    isSaving
+    onMarkAsResolved,
+    isSaving,
+    canEdit,
+    canUpdateStatus,
+    status
 }) => {
     return (
         <div className={styles.issueActions}>
@@ -38,12 +46,22 @@ export const IssueDetailActions: React.FC<IssueDetailActionsProps> = ({
                 </>
             ) : (
                 <>
-                    <button
-                        className={`${styles.actionButton} ${styles.primary}`}
-                        onClick={onEdit}
-                    >
-                        {BUTTONS.EDIT}
-                    </button>
+                    {canEdit && (
+                        <button
+                            className={`${styles.actionButton} ${styles.primary}`}
+                            onClick={onEdit}
+                        >
+                            {BUTTONS.EDIT}
+                        </button>
+                    )}
+                    {canUpdateStatus && status !== 'Done' && (
+                        <button
+                            className={`${styles.actionButton} ${styles.success}`}
+                            onClick={onMarkAsResolved}
+                        >
+                            Mark as Resolved
+                        </button>
+                    )}
                     <button
                         className={`${styles.actionButton} ${styles.secondary}`}
                     >

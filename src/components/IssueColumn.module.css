@@ -1,22 +1,22 @@
 .column {
-    background: #f8f9fa;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    padding: 1rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-primary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
     min-height: 400px;
     display: flex;
     flex-direction: column;
-    transition: all 0.2s ease;
+    transition: var(--transition-fast);
 }
 
 .column h2 {
-    margin: 0 0 1rem 0;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #495057;
+    margin: 0 0 var(--spacing-lg) 0;
+    font-size: var(--text-xl);
+    font-weight: var(--font-semibold);
+    color: var(--text-primary);
     text-align: center;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #dee2e6;
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 2px solid var(--border-secondary);
 }
 
 .issueList {
@@ -28,63 +28,63 @@
 }
 
 .issueRow {
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-sm);
 }
 
 .emptyState {
     text-align: center;
-    color: #6c757d;
+    color: var(--text-secondary);
     font-style: italic;
-    padding: 2rem;
-    background: white;
-    border-radius: 6px;
-    border: 2px dashed #dee2e6;
-    margin: 1rem 0;
+    padding: var(--spacing-2xl);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-secondary);
+    margin: var(--spacing-lg) 0;
 }
 
 .dragOverValid {
-    border-color: #28a745;
-    background-color: #f8fff9;
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+    border-color: var(--priority-low);
+    background-color: var(--status-done-bg);
+    box-shadow: 0 0 0 3px var(--shadow-low);
 }
 
 .dragOverInvalid {
-    border-color: #dc3545;
-    background-color: #fff8f8;
-    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+    border-color: var(--priority-high);
+    background-color: var(--status-backlog-bg);
+    box-shadow: 0 0 0 3px var(--shadow-high);
 }
 
 /* Responsive design */
 @media (max-width: 768px) {
     .column {
-        padding: 0.75rem;
+        padding: var(--spacing-md);
         min-height: 300px;
     }
     
     .column h2 {
-        font-size: 1.1rem;
-        margin-bottom: 0.75rem;
+        font-size: var(--text-lg);
+        margin-bottom: var(--spacing-md);
     }
     
     .emptyState {
-        padding: 1.5rem;
-        margin: 0.75rem 0;
+        padding: var(--spacing-xl);
+        margin: var(--spacing-md) 0;
     }
 }
 
 @media (max-width: 480px) {
     .column {
-        padding: 0.5rem;
+        padding: var(--spacing-sm);
         min-height: 250px;
     }
     
     .column h2 {
-        font-size: 1rem;
-        margin-bottom: 0.5rem;
+        font-size: var(--text-base);
+        margin-bottom: var(--spacing-sm);
     }
     
     .emptyState {
-        padding: 1rem;
-        margin: 0.5rem 0;
+        padding: var(--spacing-lg);
+        margin: var(--spacing-sm) 0;
     }
 } 

@@ -3,6 +3,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { Issue, IssueStatus } from '../types';
 import IssueCard from './IssueCard';
 import { ISSUE } from '../constants/strings';
+import { useUserStore } from '../store/userStore';
 import styles from './IssueColumn.module.css';
 
 type IssueColumnProps = {
@@ -11,8 +12,10 @@ type IssueColumnProps = {
 }
 
 const IssueColumn = ({ status, issues }: IssueColumnProps) => {
+    const { canMoveIssues } = useUserStore();
     const {setNodeRef, isOver, active} = useDroppable({
         id: status,
+        disabled: !canMoveIssues(),
     });
     
     const columnIssue = useMemo(()=> issues.filter((issue)=> issue.status === status ),[issues, status]);

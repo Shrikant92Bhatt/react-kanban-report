@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-import { useUserStore } from '../store/userStore';
+import { useUsersListStore } from '../store/usersListStore';
 import { USER, A11Y } from '../constants/strings';
 import styles from './UserDropdown.module.css';
 
@@ -21,7 +21,7 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({
     const [searchTerm, setSearchTerm] = useState('');
     const dropdownRef = useRef<HTMLDivElement>(null);
     
-    const { users, loading, fetchUsers } = useUserStore();
+    const { users, loading, fetchUsers } = useUsersListStore();
 
     useEffect(() => {
         if (users.length === 0) {
@@ -42,9 +42,9 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({
         };
     }, []);
 
-    const selectedUser = users.find(user => user.id === value);
+    const selectedUser = users.find((user: any) => user.id === value);
 
-    const filteredUsers = users.filter(user =>
+    const filteredUsers = users.filter((user: any) =>
         user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -122,7 +122,7 @@ export const UserDropdown: React.FC<UserDropdownProps> = ({
                     
                     <div className={styles.usersList}>
                         {filteredUsers.length > 0 ? (
-                            filteredUsers.map(user => (
+                            filteredUsers.map((user: any) => (
                                 <div
                                     key={user.id}
                                     className={`${styles.userOption} ${user.id === value ? styles.selected : ''}`}

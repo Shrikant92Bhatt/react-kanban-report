@@ -1,0 +1,61 @@
+.syncStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.syncIndicator {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.syncDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+.syncDot.synced {
+  background: var(--priority-low);
+}
+
+.syncDot.syncing {
+  background: var(--priority-medium);
+  animation: pulse 1s infinite;
+}
+
+.syncText {
+  font-weight: var(--font-medium);
+}
+
+.syncTime {
+  font-family: monospace;
+  font-weight: var(--font-semibold);
+  color: var(--text-primary);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .syncStatus {
+    font-size: var(--text-xs);
+  }
+} 

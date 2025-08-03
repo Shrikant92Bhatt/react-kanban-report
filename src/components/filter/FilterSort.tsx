@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import { Issue, IssueStatus, IssuePriority } from '../../types';
 import { FILTER, BUTTONS, ISSUE_STATUS, ISSUE_PRIORITY, LABELS } from '../../constants/strings';
-import { useUserStore } from '../../store/userStore';
+import { useUsersListStore } from '../../store/usersListStore';
 import styles from './FilterSort.module.css';
 
 interface FilterSortProps {
@@ -14,7 +14,7 @@ export const FilterSort: React.FC<FilterSortProps> = ({
     issues,
     onFilteredIssues
 }) => {
-    const { users, fetchUsers, loading: usersLoading } = useUserStore();
+    const { users, fetchUsers, loading: usersLoading } = useUsersListStore();
     const [isExpanded, setIsExpanded] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
     const [filters, setFilters] = useState({

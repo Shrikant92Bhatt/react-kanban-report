@@ -3,14 +3,18 @@ import { DndContext, DragEndEvent, DragOverlay, DragStartEvent } from '@dnd-kit/
 import IssueColumn from '../components/IssueColumn';
 import IssueCard from '../components/IssueCard';
 import { FilterSort } from '../components/filter/FilterSort';
+import { RecentlyAccessedSidebar } from '../components/RecentlyAccessedSidebar';
+import { UserSwitcher } from '../components/UserSwitcher';
 import { ISSUE_STATUSES } from '../constants/currentUser';
 import { useIssueStore } from '../store/issueStore';
+import { useUsersListStore } from '../store/usersListStore';
 import { useUserStore } from '../store/userStore';
 import { Issue, IssueStatus } from '../types';
 
 export const BoardPage = () => {
     const { issues, fetchIssues, loading, updateIssueStatus } = useIssueStore();
-    const { users, fetchUsers } = useUserStore();
+    const { users, fetchUsers } = useUsersListStore();
+    const { canMoveIssues } = useUserStore();
     const [activeIssue, setActiveIssue] = useState<Issue | null>(null);
     const [filteredIssues, setFilteredIssues] = useState<Issue[]>(issues);
 
@@ -41,9 +45,14 @@ export const BoardPage = () => {
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         
+        if (!canMoveIssues()) {
+            setActiveIssue(null);
+            return;
+        }
+        
         if (over && active.id !== over.id) {
             const issueId = active.id as string;
-                         const newStatus = over.id as IssueStatus;
+            const newStatus = over.id as IssueStatus;
             const currentIssue = issues.find(issue => issue.id === issueId);
             
             if (currentIssue && currentIssue.status !== newStatus) {
@@ -80,14 +89,17 @@ export const BoardPage = () => {
     
     return (
         <DndContext onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-            <div style={{ padding: '1rem' }}>
+            <div style={{ padding: '1rem', marginRight: '280px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                    <UserSwitcher />
+                </div>
                 <FilterSort 
                     issues={issues} 
                     onFilteredIssues={setFilteredIssues} 
                 />
                 
                 <div className="board-container">
-                                         {ISSUE_STATUSES.map((status: IssueStatus)=> (
+                    {ISSUE_STATUSES.map((status: IssueStatus)=> (
                         <IssueColumn 
                             issues={filteredIssues} 
                             status={status} 
@@ -96,6 +108,8 @@ export const BoardPage = () => {
                     ))}
                 </div>
             </div>
+            
+            <RecentlyAccessedSidebar />
             
             <DragOverlay>
                 {activeIssue ? <IssueCard {...activeIssue} /> : null}
